@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  # Go
+  go_first:
+    container_name: 'go_first'
+    build: ./go_first
+    tty: true
+    environment:
+      - "GOPATH=/go/src/go_sample"
+    volumes:
+      - .:/app
+      - ./go_src:/go/src/go_sample
+
+  # Mysql
+  go_mysql:
+    container_name: 'go_mysql'
+    build: ./go_mysql
+    ports:
+      - '13309:3306'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: go_db
+      MYSQL_USER: go_user
+      MYSQL_PASSWORD: go
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./go_mysql/datastore:/var/lib/mysql
+      - ./go_mysql/logs:/var/log/mysql
+    
